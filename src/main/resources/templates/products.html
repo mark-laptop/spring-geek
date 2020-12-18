@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{navigation :: head(Products)}"></head>
+
+<body>
+
+<nav th:replace="~{navigation :: navigation}"></nav>
+
+<div class="container">
+    <div class="row py-2">
+
+        <div class="col-12 mt-3 100px">
+            <h3>Filter</h3>
+            <form th:action="@{/product}" method="get">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" name="name"
+                           th:value="${param.name}">
+                </div>
+                <div class="form-group">
+                    <label for="minPrice">Min. price</label>
+                    <input type="number" step="any" class="form-control" id="minPrice" name="min_price"
+                           th:value="${param.min_price}">
+                </div>
+                <div class="form-group">
+                    <label for="maxPrice">Max. price</label>
+                    <input type="number" step="any" class="form-control" id="maxPrice" name="max_price"
+                           th:value="${param.max_price}">
+                </div>
+                <div class="form-group">
+                    <label for="countProducts">Count row product</label>
+                    <input type="number" class="form-control" id="countProducts" name="count_products"
+                           th:value="${param.count_products}">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Apply</button>
+                    <a th:href="@{'/product/?p=' + ${productsPage.getNumber() + 1}}" class="btn btn-warning">Reset</a>
+                </div>
+            </form>
+        </div>
+
+<!--        <div class="col-12 mt-3 100px">-->
+<!--            <form th:action="@{/product}" method="get">-->
+<!--                <label>Sort-->
+<!--                    <input th:onclick="submit()" type="checkbox" name="sort"-->
+<!--                           th:value="${param.sort}" th:checked="${param.sort != null && param.sort.equals('asc')}">-->
+<!--                </label>-->
+<!--            </form>-->
+<!--        </div>-->
+
+        <div class="col-12 mt-3">
+            <a class="btn btn-primary" th:href="@{/product/new}">Add Product</a>
+        </div>
+
+        <div class="col-12">
+            <table class="table table-bordered my-2">
+                <thead>
+                <tr>
+                    <th hidden scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${productsPage.getContent()}">
+                    <th hidden scope="row" th:text="${product.id}"></th>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.description}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td>
+                        <a sec:authorize="hasRole('ADMIN')" class="btn btn-success"
+                           th:href="@{/product/{id}(id = ${product.id})}"><i
+                                class="fas fa-edit"></i></a>
+                        <a sec:authorize="hasRole('ADMIN')" class="btn btn-danger"
+                           th:href="@{/product/delete/{id}(id = ${product.id})}"><i
+                                class="far fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link"
+                   th:href="@{'/product/?p='+ ${productsPage.previousOrFirstPageable().getPageNumber() + 1} + ${filters_out}}"
+                   aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <li class="page-item" th:classappend="${productsPage.getNumber() + 1 == index ? 'active' : ''}"
+                th:each="index : ${#numbers.sequence(1, (productsPage.getTotalPages() == 0) ? 1 : productsPage.getTotalPages())}">
+                <a class="page-link" th:text="${index}" th:href="@{'/product/?p=' + ${index} + ${filters_out}}"></a>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link"
+                   th:href="@{'/product/?p='+ ${productsPage.nextOrLastPageable().getPageNumber() + 1} + ${filters_out}}"
+                   aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+
+<script th:fragment="~{navigation :: scripts}"></script>
+
+</body>
+</html>

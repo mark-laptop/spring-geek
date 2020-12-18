@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{navigation :: head(Customers)}"></head>
+
+<body>
+
+<div th:replace="~{navigation :: navigation}"></div>
+
+<div class="container">
+    <div class="row py-2">
+
+        <div class="col-12 mt-3">
+            <h3>Filter</h3>
+            <form th:action="@{/customer}" method="get">
+                <div class="form-group">
+                    <label for="first_name">First name</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name"
+                           th:value="${param.first_name}">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last name</label>
+                    <input type="text" class="form-control" id="lastName" name="last_name"
+                           th:value="${param.last_name}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" id="email" name="email"
+                           th:value="${param.email}">
+                </div>
+                <div class="form-group">
+                    <label for="countCustomers">Count row customer</label>
+                    <input type="number" class="form-control" id="countCustomers" name="count_customers"
+                           th:value="${param.count_customers}">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Apply</button>
+                    <a th:href="@{'/customer/?p=' + ${customersPage.getNumber() + 1}}" class="btn btn-warning">Reset</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-12 mt-3">
+            <a class="btn btn-primary" th:href="@{/customer/new}">Add Customer</a>
+        </div>
+
+        <div class="col-12">
+            <table class="table table-bordered my-2">
+                <thead>
+                <tr>
+                    <th hidden scope="col">Id</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">First name</th>
+                    <th scope="col">Last name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="customer : ${customersPage.getContent()}">
+                    <th hidden scope="row" th:text="${customer.id}"></th>
+                    <td th:text="${customer.user.username}"></td>
+                    <td th:text="${customer.firstName}"></td>
+                    <td th:text="${customer.lastName}"></td>
+                    <td th:text="${customer.email}"></td>
+                    <td>
+                        <a class="btn btn-success" th:href="@{/customer/{id}(id = ${customer.id})}"><i
+                                class="fas fa-edit"></i></a>
+                        <a class="btn btn-danger" th:href="@{/customer/delete/{id}(id = ${customer.id})}"><i
+                                class="far fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link"
+                   th:href="@{'/customer/?p='+ ${customersPage.previousOrFirstPageable().getPageNumber() + 1} + ${filters_out}}"
+                   aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <li class="page-item" th:classappend="${customersPage.getNumber() + 1 == i ? 'active' : ''}"
+                th:each="i : ${#numbers.sequence(1, (customersPage.getTotalPages() == 0) ? 1 : customersPage.getTotalPages())}">
+                <a class="page-link" th:text="${i}" th:href="@{'/customer/?p=' + ${i} + ${filters_out}}"></a>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link"
+                   th:href="@{'/customer/?p='+ ${customersPage.nextOrLastPageable().getPageNumber() + 1} + ${filters_out}}"
+                   aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+
+<script th:fragment="~{navigation :: scripts}"></script>
+
+</body>
+</html>

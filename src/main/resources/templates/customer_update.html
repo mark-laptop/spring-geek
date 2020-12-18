@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{navigation :: head('Edit customer')}"></head>
+
+<body>
+
+<div th:replace="~{navigation :: navigation}"></div>
+
+<div class="container">
+    <div class="row py-2">
+        <div class="col-12">
+            <form th:action="@{/customer/update}" th:method="post" th:object="${customer}">
+                <input type="hidden" th:field="*{id}">
+                <div class="form-group">
+                    <label>First name
+                        <input type="text" class="form-control" th:field="*{firstName}" placeholder="Enter first name">
+                    </label>
+                    <small th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></small>
+                </div>
+                <div class="form-group">
+                    <label>Last name
+                        <input type="text" class="form-control" th:field="*{lastName}" placeholder="Enter last name">
+                    </label>
+                    <small th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></small>
+                </div>
+                <div class="form-group">
+                    <label>Email
+                        <input type="text" class="form-control" th:field="*{email}" placeholder="Enter email">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Address
+                        <input type="text" class="form-control" th:field="*{address}" placeholder="Enter address">
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:fragment="~{navigation :: scripts}"></script>
+
+</body>
+
+</html>

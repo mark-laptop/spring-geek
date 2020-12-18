@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{navigation :: head('EShop application')}"></head>
+
+<body>
+
+<div th:replace="~{navigation :: navigation}"></div>
+
+<br>
+<h3 th:text="${error}"></h3>
+
+<script th:fragment="~{navigation :: scripts}"></script>
+
+</body>
+</html>
