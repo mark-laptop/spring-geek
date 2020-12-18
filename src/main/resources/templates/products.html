@@ -61,7 +61,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Description</th>
                     <th scope="col">Price</th>
-                    <th scope="col">Actions</th>
+                    <th sec:authorize="hasRole('ADMIN')" scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -70,11 +70,11 @@
                     <td th:text="${product.name}"></td>
                     <td th:text="${product.description}"></td>
                     <td th:text="${product.price}"></td>
-                    <td>
-                        <a sec:authorize="hasRole('ADMIN')" class="btn btn-success"
+                    <td sec:authorize="hasRole('ADMIN')">
+                        <a class="btn btn-success"
                            th:href="@{/product/{id}(id = ${product.id})}"><i
                                 class="fas fa-edit"></i></a>
-                        <a sec:authorize="hasRole('ADMIN')" class="btn btn-danger"
+                        <a class="btn btn-danger"
                            th:href="@{/product/delete/{id}(id = ${product.id})}"><i
                                 class="far fa-trash-alt"></i></a>
                     </td>
