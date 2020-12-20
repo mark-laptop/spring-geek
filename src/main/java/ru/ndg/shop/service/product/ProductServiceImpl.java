@@ -1,6 +1,5 @@
 package ru.ndg.shop.service.product;
 
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ndg.shop.config.mapper.MapperFacade;
 import ru.ndg.shop.dto.ProductDto;
-import ru.ndg.shop.exception.NotFoundException;
+import ru.ndg.shop.exception.ProductNotFoundException;
 import ru.ndg.shop.filter.ProductFilter;
 import ru.ndg.shop.model.Product;
 import ru.ndg.shop.repository.ProductRepository;
@@ -49,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = optionalProduct.orElseThrow(() -> {
             String message = String.format("Product with id: %d not found in database.", id);
             log.error(message);
-            return new NotFoundException(message);
+            return new ProductNotFoundException(message);
         });
         return mapperFacade.map(product, ProductDto.class);
     }
@@ -65,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
     public void updateProduct(ProductDto productDto) {
         Optional<Product> optionalProduct = productRepository.findById(productDto.getId());
         Product productFromDB = optionalProduct.orElseThrow(() ->
-                new NotFoundException(String.format("Product by id: %d not found!", productDto.getId())));
+                new ProductNotFoundException(String.format("Product by id: %d not found!", productDto.getId())));
         mapperFacade.mapObject(productDto, productFromDB);
         productRepository.save(productFromDB);
     }

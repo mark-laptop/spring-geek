@@ -1,6 +1,5 @@
 package ru.ndg.shop.service.customer;
 
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ndg.shop.config.mapper.MapperFacade;
 import ru.ndg.shop.dto.CustomerDto;
-import ru.ndg.shop.exception.NotFoundException;
+import ru.ndg.shop.exception.CustomerNotFoundException;
 import ru.ndg.shop.filter.CustomerFilter;
 import ru.ndg.shop.model.Customer;
 import ru.ndg.shop.repository.CustomerRepository;
@@ -52,7 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer product = optionalProduct.orElseThrow(() -> {
             String message = String.format("Customer with id: %d not found in database.", id);
             log.error(message);
-            return new NotFoundException(message);
+            return new CustomerNotFoundException(message);
         });
         return mapperFacade.map(product, CustomerDto.class);
     }
@@ -70,7 +69,7 @@ public class CustomerServiceImpl implements CustomerService {
     public void updateCustomer(CustomerDto customerDto) {
         Optional<Customer> optionalCustomer = customerRepository.findById(customerDto.getId());
         Customer customerFromDB = optionalCustomer.orElseThrow(() ->
-                new NotFoundException(String.format("Customer by id: %d not found!", customerDto.getId())));
+                new CustomerNotFoundException(String.format("Customer by id: %d not found!", customerDto.getId())));
         mapperFacade.mapObject(customerDto, customerFromDB);
         customerRepository.save(customerFromDB);
     }
