@@ -23,8 +23,15 @@ public class OrderFilter {
 
         StringBuilder filtersOut = new StringBuilder("");
 
+        processFilterByUser();
+
         params.put("filters_out", filtersOut.toString());
         return specification;
+    }
+
+    private void processFilterByUser() {
+
+
     }
 
     public Sort getSort() {
