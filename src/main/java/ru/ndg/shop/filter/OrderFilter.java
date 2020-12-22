@@ -24,14 +24,51 @@ public class OrderFilter {
         StringBuilder filtersOut = new StringBuilder("");
 
         processFilterByUser();
+        processNumber(filtersOut);
+        processRecipient(filtersOut);
+        processAddress(filtersOut);
 
         params.put("filters_out", filtersOut.toString());
         return specification;
     }
 
+    private void processRecipient(StringBuilder filtersOut) {
+        String recipient = params.get("recipient");
+        if (recipient != null && !recipient.isEmpty() && !Character.isWhitespace(recipient.charAt(0))) {
+            specification = specification.and((Specification<Order>) (root, query, builder) ->
+                    builder.like(root.get("recipient"), String.format("%%%s%%", recipient)));
+            filtersOut.append("&recipient=").append(recipient);
+        }
+    }
+
+    private void processAddress(StringBuilder filtersOut) {
+        String address = params.get("address");
+        if (address != null && !address.isEmpty() && !Character.isWhitespace(address.charAt(0))) {
+            specification = specification.and((Specification<Order>) (root, query, builder) ->
+                    builder.like(root.get("address"), String.format("%%%s%%", address)));
+            filtersOut.append("&address=").append(address);
+        }
+    }
+
+    private void processNumber(StringBuilder filtersOut) {
+        String number = params.get("number");
+        if (number != null && !number.isEmpty() && !Character.isWhitespace(number.charAt(0))) {
+            specification = specification.and((Specification<Order>) (root, query, builder) ->
+                    builder.like(root.get("number"), String.format("%%%s%%", number)));
+            filtersOut.append("&number=").append(number);
+        }
+    }
+
     private void processFilterByUser() {
-
-
+        String isAdminParam = params.get("isAdmin");
+        try {
+            boolean isAdmin = Boolean.parseBoolean(isAdminParam);
+            if (!isAdmin) {
+                String principalName = params.get("principalName");
+                specification = specification.and((Specification<Order>) (root, query, builder) ->
+                        builder.equal(root.get("customer").get("user").get("username"), principalName));
+            }
+        } catch (NumberFormatException ignore) {}
     }
 
     public Sort getSort() {
