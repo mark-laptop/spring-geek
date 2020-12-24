@@ -50,9 +50,9 @@
                 <tr>
                     <th hidden scope="col">Id</th>
                     <th scope="col">Username</th>
-                    <th scope="col" th:include="sort_header :: customer_sort_header ('First name', 'firstName')">First name</th>
-                    <th scope="col" th:include="sort_header :: customer_sort_header ('Last name', 'lastName')">Last name</th>
-                    <th scope="col" th:include="sort_header :: customer_sort_header ('Email', 'email')">Email</th>
+                    <th scope="col" th:include="fragments/sort_header :: customer_sort_header ('First name', 'firstName')">First name</th>
+                    <th scope="col" th:include="fragments/sort_header :: customer_sort_header ('Last name', 'lastName')">Last name</th>
+                    <th scope="col" th:include="fragments/sort_header :: customer_sort_header ('Email', 'email')">Email</th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
