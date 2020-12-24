@@ -39,7 +39,13 @@ public class ProductFilter {
         String sortField = params.get("sort_field");
         String sortOrder = params.get("sort_order");
         if (sortField != null && !sortField.isEmpty() && sortOrder != null && !sortOrder.isEmpty() ) {
-                sort = Sort.by(Sort.Direction.valueOf(sortOrder), sortField);
+            sort = Sort.by(Sort.Direction.valueOf(sortOrder), sortField);
+            filtersOut.append("&sort_field=").append(sortField);
+            filtersOut.append("&sort_order=").append(sortOrder);
+        } else {
+            sortField = "name";
+            sortOrder = "ASC";
+            sort = Sort.by(Sort.Direction.valueOf(sortOrder), sortField);
             filtersOut.append("&sort_field=").append(sortField);
             filtersOut.append("&sort_order=").append(sortOrder);
         }

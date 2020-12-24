@@ -13,5 +13,17 @@
     </a>
 </th>
 
+<th scope="col" th:fragment="customer_sort_header (header, column)">[[${header}]]
+    <a th:href="@{/customer(p=${customersPage.getNumber() + 1},
+                        username=${param.username}, first_name=${param.first_name}, last_name=${param.last_name}, email=${param.email},
+                        sort_field=${column},
+                        sort_order=${
+                        param.sort_field != null && param.sort_order != null && param.sort_field[0].equals(column) && param.sort_order[0].equals('ASC') ? 'DESC' : 'ASC'
+                        }
+                        )}">
+        <i th:unless="${param.sort_field != null && param.sort_order != null && param.sort_field[0].equals(column)}" class="fa fa-sort"></i>
+        <i th:if="${param.sort_field != null && param.sort_order != null && param.sort_field[0].equals(column)}" th:class="'fa fa-sort-' + ${param.sort_field[0].equals(column) && param.sort_order[0].equals('ASC') ? 'down' : 'up'}"></i>
+    </a>
+</th>
 
 </html>

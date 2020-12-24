@@ -9,11 +9,13 @@ import java.util.Map;
 public class CustomerFilter {
 
     private Specification<Customer> specification;
+    private Sort sort;
     private Map<String, String> params;
 
     public CustomerFilter(Map<String, String> params) {
         this.params = params;
         this.specification = Specification.where(null);
+        this.sort = Sort.by(Sort.Direction.ASC, "lastName");
     }
 
     public Specification<Customer> getSpecification() {
@@ -26,20 +28,31 @@ public class CustomerFilter {
         processLastName(filtersOut);
         processFirstName(filtersOut);
         processEmail(filtersOut);
+        processSort(filtersOut);
 
         params.put("filters_out", filtersOut.toString());
 
         return specification;
     }
 
-    public Sort getSort() {
-        if (params == null) return Sort.by(Sort.Direction.ASC, "lastName");
-
-        String sortParam = params.get("sort_desc");
-        if (sortParam != null && !sortParam.isEmpty()) {
-            return Sort.by(Sort.Direction.DESC, "lastName");
+    private void processSort(StringBuilder filtersOut) {
+        String sortField = params.get("sort_field");
+        String sortOrder = params.get("sort_order");
+        if (sortField != null && !sortField.isEmpty() && sortOrder != null && !sortOrder.isEmpty() ) {
+            sort = Sort.by(Sort.Direction.valueOf(sortOrder), sortField);
+            filtersOut.append("&sort_field=").append(sortField);
+            filtersOut.append("&sort_order=").append(sortOrder);
+        } else {
+            sortField = "lastName";
+            sortOrder = "ASC";
+            sort = Sort.by(Sort.Direction.valueOf(sortOrder), sortField);
+            filtersOut.append("&sort_field=").append(sortField);
+            filtersOut.append("&sort_order=").append(sortOrder);
         }
-        return Sort.by(Sort.Direction.ASC, "lastName");
+    }
+
+    public Sort getSort() {
+        return sort;
     }
 
     private void processCountCustomer(StringBuilder filtersOut) {
