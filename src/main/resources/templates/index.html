@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{navigation :: head('EShop application')}"></head>
+<head th:replace="~{fragments/navigation :: head('EShop application')}"></head>
 
 <body>
 
-<div th:replace="~{navigation :: navigation}"></div>
+<div th:replace="~{fragments/navigation :: navigation}"></div>
 
-<script th:fragment="~{navigation :: scripts}"></script>
+<script th:fragment="~{fragments/navigation :: scripts}"></script>
 
 </body>
 </html>

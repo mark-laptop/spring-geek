@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{navigation :: head(Orders)}"></head>
+<head th:replace="~{fragments/navigation :: head(Orders)}"></head>
 
 <body>
 
-<nav th:replace="~{navigation :: navigation}"></nav>
+<nav th:replace="~{fragments/navigation :: navigation}"></nav>
 
 <div class="container">
     <div class="row py-2">
@@ -110,7 +110,7 @@
 
 </div>
 
-<script th:fragment="~{navigation :: scripts}"></script>
+<script th:fragment="~{fragments/navigation :: scripts}"></script>
 
 </body>
 </html>

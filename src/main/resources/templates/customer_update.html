@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{navigation :: head('Edit customer')}"></head>
+<head th:replace="~{fragments/navigation :: head('Edit customer')}"></head>
 
 <body>
 
-<div th:replace="~{navigation :: navigation}"></div>
+<div th:replace="~{fragments/navigation :: navigation}"></div>
 
 <div class="container">
     <div class="row py-2">
@@ -40,7 +40,7 @@
     </div>
 </div>
 
-<script th:fragment="~{navigation :: scripts}"></script>
+<script th:fragment="~{fragments/navigation :: scripts}"></script>
 
 </body>
 
