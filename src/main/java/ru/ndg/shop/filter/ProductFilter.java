@@ -36,14 +36,12 @@ public class ProductFilter {
     }
 
     private void processSort(StringBuilder filtersOut) {
-        String sortDesc = params.get("sort");
-        if (sortDesc != null && !sortDesc.isEmpty()) {
-            if (sortDesc.equals("desc")) {
-                sort = Sort.by(Sort.Direction.DESC, "name");
-            } else {
-                sort = Sort.by(Sort.Direction.ASC, "name");
-            }
-            filtersOut.append("&sort=").append(sortDesc);
+        String sortField = params.get("sort_field");
+        String sortOrder = params.get("sort_order");
+        if (sortField != null && !sortField.isEmpty() && sortOrder != null && !sortOrder.isEmpty() ) {
+                sort = Sort.by(Sort.Direction.valueOf(sortOrder), sortField);
+            filtersOut.append("&sort_field=").append(sortField);
+            filtersOut.append("&sort_order=").append(sortOrder);
         }
     }
 
