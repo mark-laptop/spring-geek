@@ -58,9 +58,9 @@
                 <thead>
                 <tr>
                     <th hidden scope="col">Id</th>
-                    <th scope="col" th:include="product_sort_header :: sort_header ('Name', 'name')">Name</th>
-                    <th scope="col" th:include="product_sort_header :: sort_header ('Description', 'description')">Description</th>
-                    <th scope="col" th:include="product_sort_header :: sort_header ('Price', 'price')">Price</th>
+                    <th scope="col" th:include="sort_header :: product_sort_header ('Name', 'name')">Name</th>
+                    <th scope="col" th:include="sort_header :: product_sort_header ('Description', 'description')">Description</th>
+                    <th scope="col" th:include="sort_header :: product_sort_header ('Price', 'price')">Price</th>
                     <th sec:authorize="hasRole('ADMIN')" scope="col">Actions</th>
                 </tr>
                 </thead>
