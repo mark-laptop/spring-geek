@@ -13,6 +13,7 @@ import ru.ndg.shop.filter.ProductFilter;
 import ru.ndg.shop.model.Product;
 import ru.ndg.shop.repository.ProductRepository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -43,6 +44,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<ProductDto> getAllProductList() {
+        return mapperFacade.mapAsList(productRepository.findAll(), ProductDto.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public ProductDto getProductById(Long id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
         Product product = optionalProduct.orElseThrow(() -> {
@@ -55,18 +62,20 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void saveProduct(ProductDto productDto) {
-        productRepository.save(mapperFacade.map(productDto, Product.class));
+    public ProductDto saveProduct(ProductDto productDto) {
+        Product product = productRepository.save(mapperFacade.map(productDto, Product.class));
+        return mapperFacade.map(product, ProductDto.class);
     }
 
     @Override
     @Transactional
-    public void updateProduct(ProductDto productDto) {
+    public ProductDto updateProduct(ProductDto productDto) {
         Optional<Product> optionalProduct = productRepository.findById(productDto.getId());
         Product productFromDB = optionalProduct.orElseThrow(() ->
                 new ProductNotFoundException(String.format("Product by id: %d not found!", productDto.getId())));
         mapperFacade.mapObject(productDto, productFromDB);
-        productRepository.save(productFromDB);
+        Product product = productRepository.save(productFromDB);
+        return mapperFacade.map(product, ProductDto.class);
     }
 
     @Override
